@@ -702,6 +702,7 @@ checksum = "f9f8bd3e56ce4dfc153cf470fffbfa98c7620958b312ca5c3a4b8d5181fd13c6"
 [[package]]
 name = "martin-core"
 version = "0.11.2"
+source = "git+https://github.com/yutannihilation/martin.git?branch=martin-on-cf-workers#359726778f29bea2800def9e9fd9e405e96b26b1"
 dependencies = [
  "async-trait",
  "base64",
@@ -740,8 +741,7 @@ dependencies = [
 [[package]]
 name = "martin-tile-utils"
 version = "0.7.8"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ae13fff67815b0c606fdf6ae5f1e7207731d5ea9f37549159446b207b969f206"
+source = "git+https://github.com/yutannihilation/martin.git?branch=martin-on-cf-workers#359726778f29bea2800def9e9fd9e405e96b26b1"
 dependencies = [
  "brotli",
  "flate2",
@@ -1451,6 +1451,7 @@ dependencies = [
 [[package]]
 name = "wasm-streams"
 version = "0.7.0"
+source = "git+https://github.com/yutannihilation/wasm-streams.git?branch=martin-on-cf-workers#79c1484f5b2ad555b1f4fd61eab39faaa26732f9"
 dependencies = [
  "futures-util",
  "js-sys",
