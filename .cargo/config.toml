@@ -1,0 +1,4 @@
+[env]
+CC_wasm32_unknown_emscripten = "emcc.exe"
+CXX_wasm32_unknown_emscripten = "em++.exe"
+AR_wasm32_unknown_emscripten = "emar.exe"
