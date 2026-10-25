@@ -14,9 +14,7 @@ Why not? Now that [Cloudflare Workers supports tokio](https://blog.cloudflare.co
   - mio: the pull request was merged, but not released on crates.io yet.
   - (libc: the pull request was merged and a new version was already released)
 - I couldn't compile martin without disabling some features, which are not necessary; S3-related crates like aws-lc-sys are not necessary because workers-rs provides access to R2.
-- wasm-streams is a bit tricky. Here's AI's explanation:
-  
-  > Why: wasm-streams 0.7.0 added `#[wasm_bindgen(private)]` to its internal stream adapter structs. In wasm-bindgen's Emscripten backend (`--target emscripten`), private structs are emitted without `${id}__force: true` and without `${id}` in the caller's `__deps`, causing Emscripten's JS linker to dead-code-eliminate the JS classes and fail at runtime with `ReferenceError: IntoUnderlyingSource is not defined`.
+- wasm-streams hits a wasm-bindgen's bug, [which is already fixed in the upstream](https://github.com/wasm-bindgen/wasm-bindgen/pull/5415). We just need to wait until the next version (0.2.130) of wasm-bindgen is released.
 
 ## License
 
