@@ -22,7 +22,7 @@ worker = { version = "0.8", features = ["http", "axum", "experimental_tokio"] }
 worker-macros = { version = "0.8", features = ["http", "experimental_tokio"] }
 
 [patch.crates-io]
-mio = { git = "https://github.com/guybedford/mio", tag = "1.2.3-cf.emscripten" }
+mio = { git = "https://github.com/tokio-rs/mio", ref = "a88e5e119172e4fb1638926faf65a4fe889e05b1" }
 tokio = { git = "https://github.com/guybedford/tokio", tag = "1.53.1-cf.emscripten" }
 
 # This is already fixed in upstream by https://github.com/wasm-bindgen/wasm-bindgen/pull/5415
