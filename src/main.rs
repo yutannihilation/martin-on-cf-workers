@@ -3,7 +3,7 @@ mod r2;
 use axum::{
     extract::{Path, State},
     http::{header, HeaderMap, StatusCode, Uri},
-    response::{Html, IntoResponse, Response},
+    response::{IntoResponse, Response},
     routing::get,
     Json, Router,
 };
@@ -95,10 +95,6 @@ async fn get_style(
     Json(style)
 }
 
-async fn index() -> Html<&'static str> {
-    Html(include_str!("pmtiles-tileserver.html"))
-}
-
 async fn init_source(bucket: Bucket) -> Result<PmtilesSource> {
     let store = Box::new(R2ObjectStore::new(bucket));
     let cache = PmtCacheInstance::new(0, PmtCache::default());
@@ -115,7 +111,6 @@ async fn init_source(bucket: Bucket) -> Result<PmtilesSource> {
 
 fn router(source: PmtilesSource) -> Router {
     Router::new()
-        .route("/", get(index))
         .route("/style.json", get(get_style))
         .route("/tiles/{z}/{x}/{y}", get(get_tile))
         .with_state(source)
