@@ -725,7 +725,11 @@ dependencies = [
 name = "martin-on-cf-workers"
 version = "0.1.0"
 dependencies = [
+ "async-trait",
  "axum",
+ "bytes",
+ "chrono",
+ "futures-util",
  "http",
  "martin-core",
  "martin-tile-utils",
@@ -733,7 +737,6 @@ dependencies = [
  "serde",
  "serde_json",
  "tower-service",
- "url",
  "worker",
  "worker-macros",
 ]

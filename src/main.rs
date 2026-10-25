@@ -1,3 +1,5 @@
+mod r2;
+
 use axum::{
     extract::{Path, State},
     http::{header, HeaderMap, StatusCode, Uri},
@@ -9,12 +11,11 @@ use martin_core::tiles::pmtiles::{PmtCache, PmtCacheInstance, PmtilesSource};
 use martin_core::tiles::{Source as _, UrlQuery};
 use martin_core::CacheZoomRange;
 use martin_tile_utils::TileCoord;
-use object_store::{ObjectStoreExt as _, PutPayload};
 use serde::Deserialize;
 use tower_service::Service;
 use worker::*;
 
-const WEBP2_PMTILES: &[u8] = include_bytes!("../tests/fixtures/pmtiles2/webp2.pmtiles");
+use crate::r2::R2ObjectStore;
 
 fn main() {}
 
@@ -98,26 +99,18 @@ async fn index() -> Html<&'static str> {
     Html(include_str!("pmtiles-tileserver.html"))
 }
 
-async fn init_source() -> PmtilesSource {
-    let url = url::Url::parse("memory:///webp2.pmtiles").expect("Failed to parse memory URL");
-    let (store, path) = object_store::parse_url_opts(&url, std::iter::empty::<(&str, &str)>())
-        .expect("Failed to parse object store URL");
-
-    store
-        .put(&path, PutPayload::from_static(WEBP2_PMTILES))
-        .await
-        .expect("Failed to load PMTiles fixture into memory store");
-
+async fn init_source(bucket: Bucket) -> Result<PmtilesSource> {
+    let store = Box::new(R2ObjectStore::new(bucket));
     let cache = PmtCacheInstance::new(0, PmtCache::default());
     PmtilesSource::new(
         cache,
         "webp2".to_owned(),
         store,
-        path,
+        "webp2.pmtiles",
         CacheZoomRange::default(),
     )
     .await
-    .expect("Failed to create PMTiles source")
+    .map_err(|e| Error::RustError(format!("Failed to create PMTiles source: {e}")))
 }
 
 fn router(source: PmtilesSource) -> Router {
@@ -131,9 +124,10 @@ fn router(source: PmtilesSource) -> Router {
 #[event(fetch)]
 async fn fetch(
     req: HttpRequest,
-    _env: Env,
+    env: Env,
     _ctx: Context,
 ) -> Result<http::Response<axum::body::Body>> {
-    let source = init_source().await;
+    let bucket = env.bucket("BUCKET")?;
+    let source = init_source(bucket).await?;
     Ok(router(source).call(req).await?)
 }

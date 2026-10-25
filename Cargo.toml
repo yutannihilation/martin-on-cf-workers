@@ -6,7 +6,11 @@ authors = ["Hiroaki Yutani <yutani.ini@gmail.com>"]
 publish = false
 
 [dependencies]
+async-trait = "0.1"
 axum = { version = "0.8", default-features = false, features = ["json"] }
+bytes = "1"
+chrono = { version = "0.4", default-features = false }
+futures-util = { version = "0.3", default-features = false }
 http = "1"
 martin-core = { version = "0.11.2", git = "https://github.com/yutannihilation/martin.git", branch = "martin-on-cf-workers", default-features = false, features = ["pmtiles"] }
 martin-tile-utils = { version = "0.7.8", git = "https://github.com/yutannihilation/martin.git", branch = "martin-on-cf-workers" }
@@ -14,7 +18,6 @@ object_store = { version = "0.14", default-features = false }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tower-service = "0.3"
-url = "2"
 worker = { version = "0.8", features = ["http", "axum", "experimental_tokio"] }
 worker-macros = { version = "0.8", features = ["http", "experimental_tokio"] }
 

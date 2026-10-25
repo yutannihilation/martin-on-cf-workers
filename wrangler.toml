@@ -5,3 +5,7 @@ compatibility_flags = ["new_module_registry"]
 
 [build]
 command = "cargo install -q \"worker-build@^0.8\" && worker-build --release --emscripten"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "pmtiles"
